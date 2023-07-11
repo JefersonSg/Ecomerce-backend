@@ -124,6 +124,12 @@ module.exports = class ProductController {
   static async getAll(req, res) {
     const products = await Product.find().sort('-createdAt');
 
+    if (!products) {
+      res.status(200).json({
+        message: 'nenhum item encontrado',
+      });
+    }
+
     res.status(200).json({
       products,
     });
