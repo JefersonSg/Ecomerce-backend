@@ -7,6 +7,13 @@ const getUserByToken = require('../helpers/getUserByToken');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = class ProductController {
+  static async teste(req, res) {
+    res.json({
+      message: 'Teste funcionando',
+    });
+    return;
+  }
+
   static async create(req, res) {
     const {
       name,

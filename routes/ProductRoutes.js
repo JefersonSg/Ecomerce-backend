@@ -8,6 +8,7 @@ const { imageUpload } = require('../helpers/imageUpload');
 
 // GETS
 router.get('/', checkToken, ProductController.getAll);
+router.get('/teste', ProductController.teste);
 router.get('/:id', ProductController.getProductById);
 
 // POST
