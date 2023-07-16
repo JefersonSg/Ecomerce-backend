@@ -5,6 +5,7 @@ const ProductRoutes = require('./routes/ProductRoutes');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
+const CategoryRoutes = require('./routes/CategoryRoutes');
 
 const app = express();
 
@@ -21,16 +22,17 @@ app.use('/files', express.static(path.resolve(__dirname, 'public', 'images')));
 // Routes
 app.use('/users', UserRoutes);
 app.use('/products', ProductRoutes);
+app.use('/categorys', CategoryRoutes);
 
 // Routes
 app.listen(5000);
 
-https
-  .createServer(
-    {
-      cert: fs.readFileSync('SSL/code.crt'),
-      key: fs.readFileSync('SSL/code.key'),
-    },
-    app,
-  )
-  .listen(3333, console.log('Rodando https'));
+// https
+//   .createServer(
+//     {
+//       cert: fs.readFileSync('SSL/code.crt'),
+//       key: fs.readFileSync('SSL/code.key'),
+//     },
+//     app,
+//   )
+//   .listen(443, console.log('Rodando https'));

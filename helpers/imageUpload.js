@@ -10,6 +10,8 @@ const imageStorage = multer.diskStorage({
       folder = 'users';
     } else if (req.baseUrl.includes('products')) {
       folder = 'products';
+    } else if (req.baseUrl.includes('categorys')) {
+      folder = 'category';
     }
     cb(null, `public/images/${folder}/`);
   },

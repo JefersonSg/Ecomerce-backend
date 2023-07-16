@@ -8,6 +8,7 @@ const { imageUpload } = require('../helpers/imageUpload');
 
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
+router.post('/admin/login', UserController.loginAdmin);
 router.get('/checkuser', UserController.checkUser);
 router.get('/:id', UserController.getUserById);
 router.patch(

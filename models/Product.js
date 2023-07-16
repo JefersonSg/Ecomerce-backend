@@ -12,19 +12,28 @@ const Product = mongoose.model(
       brand: {
         type: String,
       },
-      model: {
+      description: {
         type: String,
       },
       price: {
         type: Number,
         required: true,
       },
-      images: {
+      colors: {
         type: Array,
         required: true,
       },
-      image: {
+      codeColors: {
+        type: Array,
+        required: true,
+      },
+      category: {
         type: String,
+        required: true,
+      },
+      images: {
+        type: Array,
+        required: true,
       },
       stock: {
         type: Object,

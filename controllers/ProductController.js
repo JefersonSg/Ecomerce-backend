@@ -13,21 +13,17 @@ module.exports = class ProductController {
     });
     return;
   }
-
   static async create(req, res) {
     const {
       name,
       brand,
       price,
-      model,
-      sizeP,
-      sizeM,
-      sizeG,
-      sizeGG,
-      colorP,
-      colorM,
-      colorG,
-      colorGG,
+      category,
+      description,
+
+      colors,
+      codeColors,
+
       amountP,
       amountM,
       amountG,
@@ -35,7 +31,6 @@ module.exports = class ProductController {
     } = req.body;
 
     const images = req.files;
-
     if (!name) {
       res.status(422).json({
         message: 'Digite o nome do produto',
@@ -55,18 +50,31 @@ module.exports = class ProductController {
       });
       return;
     }
-    if (!model) {
+    if (!category) {
       res.status(422).json({
-        message: 'Digite o modelo do produto',
+        message: 'Informe  a categoria do produto',
+      });
+      return;
+    }
+
+    if (!description) {
+      res.status(422).json({
+        message: 'Digite a descricao do produto',
       });
       return;
     }
 
     // generate a const stock with all infos products/
 
-    if (!colorP && !colorM && !colorG && !colorGG) {
+    if (!colors) {
       res.status(422).json({
         message: 'Digite a cor do produto',
+      });
+      return;
+    }
+    if (!codeColors) {
+      res.status(422).json({
+        message: 'Digite a o codigo da cor do produto',
       });
       return;
     }
@@ -79,20 +87,16 @@ module.exports = class ProductController {
     }
     const stock = {
       sizeP: {
-        color: colorP,
-        amount: amountP,
+        amount: amountP.split(','),
       },
       sizeM: {
-        color: colorM,
-        amount: amountM,
+        amount: amountM.split(','),
       },
       sizeG: {
-        color: colorG,
-        amount: amountG,
+        amount: amountG.split(','),
       },
       sizeGG: {
-        color: colorGG,
-        amount: amountGG,
+        amount: amountGG.split(','),
       },
     };
 
@@ -108,7 +112,10 @@ module.exports = class ProductController {
       name,
       brand,
       price,
-      model,
+      colors: colors.split(','),
+      codeColors: codeColors.split(','),
+      category,
+      description,
       stock: stock,
       images: [],
     });
@@ -163,6 +170,27 @@ module.exports = class ProductController {
       product,
     });
   }
+  static async getProductByCategory(req, res) {
+    const category = req.params.id;
+    if (!ObjectId.isValid(category)) {
+      res.status(422).json({
+        message: 'ID inválido, produto não encontrado',
+      });
+      return;
+    }
+
+    const products = await Product.find({ category: category });
+
+    if (!products) {
+      res.status(422).json({
+        message: 'Nenhum produto não encontrado',
+      });
+      return;
+    }
+    res.status(200).json({
+      products,
+    });
+  }
 
   static async updateProduct(req, res) {
     const id = req.params.id;
@@ -170,15 +198,10 @@ module.exports = class ProductController {
       name,
       brand,
       price,
-      model,
-      sizeP,
-      sizeM,
-      sizeG,
-      sizeGG,
-      colorP,
-      colorM,
-      colorG,
-      colorGG,
+      category,
+      description,
+      colors,
+      codeColors,
       amountP,
       amountM,
       amountG,
@@ -218,12 +241,17 @@ module.exports = class ProductController {
     } else {
       updateData.brand = brand;
     }
-
-    if (!model) {
-      res.status(422).json({ message: 'O modelo é obrigatório!' });
+    if (!category) {
+      res.status(422).json({ message: 'A descricao é obrigatória!' });
       return;
     } else {
-      updateData.model = model;
+      updateData.category = category;
+    }
+    if (!description) {
+      res.status(422).json({ message: 'A descricao é obrigatória!' });
+      return;
+    } else {
+      updateData.description = description;
     }
     if (!price) {
       res.status(422).json({ message: 'O preço é obrigatório!' });
@@ -231,11 +259,22 @@ module.exports = class ProductController {
     } else {
       updateData.price = price;
     }
-    if (!colorP && !colorM && !colorG && !colorGG) {
+    if (!colors) {
       res.status(422).json({
         message: 'Digite a cor que tem no estoque',
       });
       return;
+    } else {
+      updateData.colors = colors.split(',');
+    }
+
+    if (!codeColors) {
+      res.status(422).json({
+        message: 'È necessario o codigo da cor',
+      });
+      return;
+    } else {
+      updateData.codeColors = codeColors.split(',');
     }
 
     if (!amountP && !amountM && !amountG && !amountGG) {
@@ -244,22 +283,19 @@ module.exports = class ProductController {
       });
       return;
     }
+
     const stock = {
       sizeP: {
-        color: colorP,
-        amount: amountP,
+        amount: amountP.split(','),
       },
       sizeM: {
-        color: colorM,
-        amount: amountM,
+        amount: amountM.split(','),
       },
       sizeG: {
-        color: colorG,
-        amount: amountG,
+        amount: amountG.split(','),
       },
       sizeGG: {
-        color: colorGG,
-        amount: amountGG,
+        amount: amountGG.split(','),
       },
     };
     updateData.stock = stock;
@@ -270,7 +306,6 @@ module.exports = class ProductController {
         updateData.images.push(image.filename);
       });
     }
-    console.log(updateData);
     await Product.findByIdAndUpdate(id, updateData);
 
     res
@@ -278,7 +313,7 @@ module.exports = class ProductController {
       .json({ product, message: 'Produto atualizado com sucesso!' });
   }
 
-  // remove a pet
+  // remove a Product
   static async removeProductById(req, res) {
     const id = req.params.id;
 
