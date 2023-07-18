@@ -26,13 +26,3 @@ app.use('/categorys', CategoryRoutes);
 
 // Routes
 app.listen(5000);
-
-// https
-//   .createServer(
-//     {
-//       cert: fs.readFileSync('SSL/code.crt'),
-//       key: fs.readFileSync('SSL/code.key'),
-//     },
-//     app,
-//   )
-//   .listen(443, console.log('Rodando https'));
