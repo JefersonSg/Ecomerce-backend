@@ -6,6 +6,7 @@ const path = require('path');
 const CategoryRoutes = require('./routes/CategoryRoutes');
 
 const app = express();
+const port = process.env.PORT || 5000;
 
 // config JSON response
 app.use(express.json());
@@ -23,4 +24,4 @@ app.use('/products', ProductRoutes);
 app.use('/categorys', CategoryRoutes);
 
 // Routes
-app.listen(5000);
+app.listen(port);

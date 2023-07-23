@@ -3,7 +3,8 @@ const router = require('express').Router();
 const ProductController = require('../controllers/ProductController');
 
 // middleware
-const checkToken = require('../helpers/checkToken');
+// const checkToken = require('../helpers/checkToken');
+
 const { imageUpload } = require('../helpers/imageUpload');
 
 // GETS
