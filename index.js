@@ -21,6 +21,7 @@ app.use('/files', express.static(path.resolve(__dirname, 'public', 'images')));
 // Routes
 app.use('/users', UserRoutes);
 app.use('/products', ProductRoutes);
+app.use('/', ProductRoutes);
 app.use('/categorys', CategoryRoutes);
 
 // Routes
