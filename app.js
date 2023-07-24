@@ -4,9 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-// const UserRoutes = require('./routes/UserRoutes');
-// const ProductRoutes = require('./routes/ProductRoutes');
-// const CategoryRoutes = require('./routes/CategoryRoutes');
+const UserRoutes = require('./routes/UserRoutes');
+const ProductRoutes = require('./routes/ProductRoutes');
+const CategoryRoutes = require('./routes/CategoryRoutes');
 
 var app = express();
 
@@ -18,9 +18,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/products', ProductRoutes);
-// app.use('/users', UserRoutes);
-// app.use('/categorys', CategoryRoutes);
+app.use('/products', ProductRoutes);
+app.use('/users', UserRoutes);
+app.use('/categorys', CategoryRoutes);
 app.use('/', (req, res) => {
   res.status(200).json({
     message: 'nenhum item encontrado',
